@@ -5,6 +5,6 @@ package com.jenkov.nioserver;
  */
 public interface IMessageReaderFactory {
 
-    public IMessageReader createMessageReader();
+    IMessageReader createMessageReader();
 
 }

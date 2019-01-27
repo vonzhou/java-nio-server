@@ -15,27 +15,35 @@ import java.util.List;
  */
 public class HttpMessageReader implements IMessageReader {
 
-    private MessageBuffer messageBuffer    = null;
+    private MessageBuffer messageBuffer = null;
 
     private List<Message> completeMessages = new ArrayList<Message>();
-    private Message       nextMessage      = null;
+    private Message nextMessage = null;
 
     public HttpMessageReader() {
     }
 
     @Override
     public void init(MessageBuffer readMessageBuffer) {
-        this.messageBuffer        = readMessageBuffer;
-        this.nextMessage          = messageBuffer.getMessage();
+        this.messageBuffer = readMessageBuffer;
+        this.nextMessage = messageBuffer.getMessage();
         this.nextMessage.metaData = new HttpHeaders();
     }
 
+    /**
+     * 从ByteBuffer中读取Msg,相当于解码
+     *
+     * @param socket
+     * @param byteBuffer
+     * @throws IOException
+     */
     @Override
     public void read(Socket socket, ByteBuffer byteBuffer) throws IOException {
         int bytesRead = socket.read(byteBuffer);
+        // 为读ByteBuffer做准备, limit->position, position->0
         byteBuffer.flip();
 
-        if(byteBuffer.remaining() == 0){
+        if (byteBuffer.remaining() == 0) {
             byteBuffer.clear();
             return;
         }
@@ -43,7 +51,7 @@ public class HttpMessageReader implements IMessageReader {
         this.nextMessage.writeToMessage(byteBuffer);
 
         int endIndex = HttpUtil.parseHttpRequest(this.nextMessage.sharedArray, this.nextMessage.offset, this.nextMessage.offset + this.nextMessage.length, (HttpHeaders) this.nextMessage.metaData);
-        if(endIndex != -1){
+        if (endIndex != -1) {
             Message message = this.messageBuffer.getMessage();
             message.metaData = new HttpHeaders();
 

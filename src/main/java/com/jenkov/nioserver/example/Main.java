@@ -22,6 +22,7 @@ public class Main {
 
         byte[] httpResponseBytes = httpResponse.getBytes("UTF-8");
 
+        // HTTP 请求的处理过程
         IMessageProcessor messageProcessor = (request, writeProxy) -> {
             System.out.println("Message Received from socket: " + request.socketId);
 
@@ -29,9 +30,13 @@ public class Main {
             response.socketId = request.socketId;
             response.writeToMessage(httpResponseBytes);
 
+            // 响应入队
             writeProxy.enqueue(response);
         };
 
+        //端口
+        // 读取HTTP消息
+        // 消息处理器
         Server server = new Server(9999, new HttpMessageReaderFactory(), messageProcessor);
 
         server.start();

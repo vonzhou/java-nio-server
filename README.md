@@ -1,2 +1,2 @@
-# java-nio-server
-A Java NIO Server using non-blocking IO all the way through.
+# 使用NIO实现的HTTP Server
+

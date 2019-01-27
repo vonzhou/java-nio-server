@@ -9,12 +9,11 @@ import java.util.List;
  */
 public interface IMessageReader {
 
-    public void init(MessageBuffer readMessageBuffer);
+    void init(MessageBuffer readMessageBuffer);
 
-    public void read(Socket socket, ByteBuffer byteBuffer) throws IOException;
+    void read(Socket socket, ByteBuffer byteBuffer) throws IOException;
 
-    public List<Message> getMessages();
-
+    List<Message> getMessages();
 
 
 }
